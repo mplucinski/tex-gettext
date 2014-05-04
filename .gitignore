@@ -1,0 +1,6 @@
+__pycache__
+examples/*.aux
+examples/*.log
+examples/sample_doc.*.tex
+examples/*.pdf
+examples/*.pot

@@ -1,0 +1,63 @@
+\ProvidesPackage{gettext}
+\RequirePackage{ifthen}
+\RequirePackage{intcalc}
+
+\newcounter{_gettext_n}
+
+% logic primitives
+\newcommand{\gettextmathbool}[1]{%
+\ifnum #1=0 0\else1\fi
+}
+
+\newcommand{\gettextmathnand}[2]{%
+\ifnum \gettextmathbool{#1}=1 \ifnum \gettextmathbool{#2}=1 0\else1\fi\else1\fi%
+}
+
+\newcommand{\gettextmathifthenelse}[3]{%
+\ifnum \gettextmathbool{#1}=1 #2\else#3\fi%
+}
+
+% logic compounds
+\newcommand{\gettextmathnot}[1]{%
+\gettextmathnand{#1}{#1}%
+}
+
+\newcommand{\gettextmathand}[2]{%
+\gettextmathnot{\gettextmathnand{#1}{#2}}%
+}
+
+\newcommand{\gettextmathor}[2]{%
+\gettextmathnand{\gettextmathnot{#1}}{\gettextmathnot{#2}}
+}
+
+% arithmetic primitives
+\newcommand{\gettextmathequal}[2]{%
+\ifnum #1=#2 1\else0\fi%
+}
+
+\newcommand{\gettextmathgreaterthan}[2]{%
+\ifnum #1>#2 1\else0\fi%
+}
+
+\newcommand{\gettextmathlesserthan}[2]{%
+\ifnum #1<#2 1\else0\fi%
+}
+
+% arithmetic compounds
+\newcommand{\gettextmathnotequal}[2]{%
+\gettextmathnot{\gettextmathequal{#1}{#2}}%
+}
+
+\newcommand{\gettextmathmodulo}[2]{%
+\intcalcMod{#1}{#2}%
+}
+
+\newcommand{\gettextmathgreaterequal}[2]{%
+\gettextmathor{\gettextmathgreaterthan{#1}{#2}}{\gettextmathequal{#1}{#2}}%
+}
+
+\newcommand{\gettextmathlesserequal}[2]{%
+\gettextmathor{\gettextmathlesserthan{#1}{#2}}{\gettextmathequal{#1}{#2}}%
+}
+
+\endinput

@@ -1,0 +1,27 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{gettext}
+
+\newcommand{\sandwitches}[1]{
+\ngettext{There is one sandwich on the table}{There are #1 sandwiches on the table}{#1}
+}
+
+\begin{document}
+
+{\large get\TeX t}
+
+\gettext{Hello world!}
+
+\sandwitches{1}
+
+\sandwitches{2}
+
+\sandwitches{3}
+
+\sandwitches{4}
+
+\sandwitches{5}
+
+\end{document}
