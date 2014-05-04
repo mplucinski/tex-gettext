@@ -1,7 +1,7 @@
 tex-gettext
 ===========
 
-![alt text](https://github.com/mplucinski/tex-gettext/raw/master/docs/logo.png "tex-gettext")
+![alt text](https://github.com/mplucinski/tex-gettext/raw/master/docs/logo_small.png "tex-gettext")
 
 Localization tool for TeX/LaTeX documents.
 
