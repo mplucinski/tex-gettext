@@ -240,7 +240,6 @@ class Translation:
 				variants = [ (k, v) for k,v in variants.items() if k.startswith(self.TAG_MSGSTR+'[')]
 				variants = sorted(variants, key=lambda x: x[0])
 				variants = [ i[1] for i in variants ]
-				print('VARIANTS: '+repr(variants))
 			return convert_plurals(rule, tag.args[2].content, variants)
 		elif tag.name == '\\pgettext':
 			if not self.file:
