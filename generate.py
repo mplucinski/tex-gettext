@@ -12,6 +12,8 @@ import sys
 import time
 import translator
 
+VERSION='0.1'
+
 logging.basicConfig(level=logging.DEBUG)
 
 def generate(input, languages=None):
@@ -35,7 +37,7 @@ def generate(input, languages=None):
 		subprocess.check_call(['xdg-open', i])
 
 def main():
-	parser = argparse.ArgumentParser(description='Documents internationalization tool')
+	parser = argparse.ArgumentParser(description='Documents internationalization tool (version {})'.format(VERSION))
 	parser.add_argument('--input', action='store',
 		help='Name of input file (default: input.tex)', default='input.tex')
 	parser.add_argument('--languages', action='store',
