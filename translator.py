@@ -275,7 +275,7 @@ class Translation:
 			raise Exception('Translation instance has no associated file')
 		if self._parsed:
 			return
-		print('Parsing {}'.format(self.file))
+		sys.stderr.write('Parsing {}\n'.format(self.file))
 		with open(self.file) as f:
 			self._parsed = {}
 			def add_tr(tag):
@@ -291,45 +291,33 @@ class Translation:
 
 			next_tag = None
 			for line in f:
-				print('LINE: '+line)
 				if line.startswith('#'):
 					continue
 				if not line.startswith('"'):
 					if tag and line.startswith(self.TAG_MSGID+' '):
-						print('Translation ended: '+repr(tag))
 						add_tr(tag)
 						tag = {}
 
-					print('Line is new tag')
 					if next_tag is not None:
-						print('NEXT TAG: '+next_tag+' -> '+next_tag_content)
 						add_tag(next_tag, next_tag_content)
 
 					sep = line.find(' ')
 					next_tag = line[:sep].strip()
 					next_tag_content = line[sep:].strip()
-					print('Start of next tag: '+next_tag)
 				else:
 					next_tag_content += line
 			add_tag(next_tag, next_tag_content)
 			add_tr(tag)
 
-			for i in self._parsed:
-				print('TRANSLATIONS<'+repr(i)+'>=<'+repr(self._parsed[i])+'>')
-
 		if ('',None) in self._parsed:
 			self._header = {}
 			headers = self._parsed.pop(('',None))[self.TAG_MSGSTR].split('\\n')
-			print(repr(headers))
 			for i in headers:
 				sep = i.find(':')
 				key = i[:sep].strip()
 				value = i[sep+1:].strip()
 				if key:
 					self._header[key] = value
-
-		for i in self._header:
-			print('HEADER: "'+i+'" -> "'+self._header[i]+'"')
 
 	def get_header(self, key):
 		self._ensure_parsed()
@@ -338,9 +326,7 @@ class Translation:
 	def __getitem__(self, key):
 		self._ensure_parsed()
 		key = (key[0], key[1])
-		print('GETITEM key="'+repr(key)+'" value="'+repr(self._parsed[key])+'"')
 		return self._parsed[key]
-
 
 def find_translations(input_file, directory=None, languages=None):
 	directory = directory or os.getcwd()
