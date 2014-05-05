@@ -8,6 +8,10 @@
 \ngettext{There is one sandwich on the table}{There are #1 sandwiches on the table}{#1}
 }
 
+\newcommand{\mercuries}[1]{
+\npgettext{first mercury is a person, second is substance, third is planet}{One mercury brings mercury onto Mercury}{#1 mercuries bring mercury onto Mercury}{#1}
+}
+
 \begin{document}
 
 {\large get\TeX t}
@@ -23,5 +27,15 @@
 \sandwitches{4}
 
 \sandwitches{5}
+
+\mercuries{1}
+
+\mercuries{2}
+
+\mercuries{3}
+
+\mercuries{4}
+
+\mercuries{5}
 
 \end{document}

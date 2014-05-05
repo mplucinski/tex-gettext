@@ -177,6 +177,7 @@ class Translation:
 		tags += document.find_tags('\\gettext')
 		tags += document.find_tags('\\pgettext', 2)
 		tags += document.find_tags('\\ngettext', 3)
+		tags += document.find_tags('\\npgettext', 4)
 		return tags
 
 	def generate_template(self, document):
@@ -221,6 +222,12 @@ class Translation:
 						template.write('{} "{}"\n'.format(self.TAG_MSGCTXT, escape(tag.args[0].content)))
 						template.write('{} "{}"\n'.format(self.TAG_MSGID, escape(tag.args[1].content)))
 						template.write('{} ""\n'.format(self.TAG_MSGSTR))
+					elif tag.name == '\\npgettext':
+						template.write('{} "{}"\n'.format(self.TAG_MSGCTXT, escape(tag.args[0].content)))
+						template.write('{} "{}"\n'.format(self.TAG_MSGID, escape(tag.args[1].content)))
+						template.write('{} "{}"\n'.format(self.TAG_MSGID_PLURAL, escape(tag.args[2].content)))
+						template.write('{}[0] ""\n'.format(self.TAG_MSGSTR))
+						template.write('{}[1] ""\n'.format(self.TAG_MSGSTR))
 					template.write('\n')
 			return template_name
 
@@ -245,6 +252,17 @@ class Translation:
 			if not self.file:
 				return tag.args[1].content
 			return self[(tag.args[1].content, tag.args[0].content)][self.TAG_MSGSTR]
+		elif tag.name == '\\npgettext':
+			if not self.file:
+				rule = DEFAULT_PLURAL
+				variants = (tag.args[1].content, tag.args[2].content)
+			else:
+				rule = self.get_header('Plural-Forms')
+				variants = self[(tag.args[1].content, tag.args[0].content)]
+				variants = [ (k, v) for k,v in variants.items() if k.startswith(self.TAG_MSGSTR+'[')]
+				variants = sorted(variants, key=lambda x: x[0])
+				variants = [ i[1] for i in variants ]
+			return convert_plurals(rule, tag.args[3].content, variants)
 		elif tag.name == '\\today':
 			return self._icu_date_full.format(float(datetime.datetime.now().timestamp()))
 		elif tag.name == '\\formatdate':
