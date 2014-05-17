@@ -67,6 +67,13 @@ class Document:
 	def find_tags(self, tag, nargs=1):
 		with open(self.name) as file:
 			doc = file.read()
+			line_number = [ 0 for i in range(len(doc)) ]
+			line = 1
+			for i in range(len(doc)):
+				line_number[i] = line
+				if doc[i] == '\n':
+					line += 1
+
 			texts = list()
 			pos = 0
 
@@ -95,7 +102,14 @@ class Document:
 					try:
 						end = _find_matching_closing(start)
 					except Exception as e:
-						raise Exception('Could not find end for tag that starts at {pos} character ({text})'.format(pos=start, text=(doc[max(start-20, 0):start]+' --> '+doc[start:min(start+20, len(doc))])))
+						raise Exception(
+							'Could not find end for tag that starts at line '+
+							'{line} ({text})'.format(
+								line=line_number[start], 
+								text=(
+									doc[max(start-20, 0):start]+' --> '+
+									doc[start:min(start+20, len(doc))])
+							))
 					start += 1 #skip initial '{'
 					args.append(Tag.Argument(doc[start:end], start, end))
 					start = doc.find('{', end)
