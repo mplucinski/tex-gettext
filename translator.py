@@ -9,7 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
-import tex_gettext.tex_math
+import tex_math
 import tzlocal
 import unittest
 
